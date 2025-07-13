@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo List App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>My Todo List</h1>
+      <form id="todo-form">
+        <input type="text" id="todo-input" placeholder="新しいタスクを追加" autocomplete="off">
+        <button type="submit"><i class="fas fa-plus-square"></i></button>
+      </form>
+    </header>
+
+    <div class="filter-container">
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">すべて</button>
+            <button class="filter-btn" data-filter="pending">未完了</button>
+            <button class="filter-btn" data-filter="completed">完了済み</button>
+        </div>
+    </div>
+
+    <ul id="todo-list"></ul>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
