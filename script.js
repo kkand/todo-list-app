@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const span = document.createElement('span');
     span.textContent = taskText;
+    span.className = 'task-text'; // 新しく追加: スタイル用にクラスを追加
 
     taskContent.appendChild(checkbox);
     taskContent.appendChild(span);
@@ -142,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
+    deleteBtn.className = 'delete-btn'; // スタイル用にクラスを追加
     deleteBtn.onclick = async () => {
       if (currentUser) {
         try {
