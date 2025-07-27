@@ -17,6 +17,7 @@ body {
   width: 100%;
   max-width: 450px;
   box-sizing: border-box;
+  position: relative; /* ログアウトボタンのabsolute配置の基準 */
 }
 
 h1 {
@@ -65,8 +66,14 @@ button:active {
 }
 
 #logout-btn {
+    position: absolute; /* 絶対配置 */
+    top: 1rem; /* 上から1rem */
+    right: 1rem; /* 右から1rem */
+    width: auto; /* 幅を自動調整 */
+    padding: 0.5rem 1rem; /* パディングを調整 */
     background-color: #dc3545;
-    margin-top: 1rem;
+    margin-top: 0; /* マージンをリセット */
+    font-size: 0.9rem; /* フォントサイズを調整 */
 }
 
 #logout-btn:hover {
