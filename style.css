@@ -100,35 +100,38 @@ p#user-email {
 .filter-tabs {
   display: flex;
   flex: 1;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  /* border: 1px solid #ddd; */ /* 削除 */
+  border-radius: 25px; /* より丸く */
   overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* 影を追加 */
 }
 
 .filter-tab {
   flex: 1;
   padding: 0.6rem 0.8rem;
-  background-color: #f8f9fa;
+  background-color: #f0f2f5; /* 背景色を調整 */
   color: #555;
   border: none;
-  border-right: 1px solid #ddd;
+  /* border-right: 1px solid #ddd; */ /* 削除 */
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
-  border-radius: 0; /* タブ形式なので角丸をリセット */
+  border-radius: 25px; /* より丸く */
   margin-bottom: 0;
+  text-align: center;
 }
 
-.filter-tab:last-child {
-  border-right: none;
+.filter-tab:not(:last-child) {
+  margin-right: 5px; /* タブ間のスペース */
 }
 
 .filter-tab.active {
   background-color: #007bff;
   color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* アクティブなタブに影 */
 }
 
 .filter-tab:hover:not(.active) {
-  background-color: #e9ecef;
+  background-color: #e2e6ea; /* ホバー時の色を調整 */
 }
 
 .filter-sort-controls select {
