@@ -1,35 +1,51 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Todo List App</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <div class="container">
-    <header>
-      <h1>My Todo List</h1>
-      <form id="todo-form">
-        <input type="text" id="todo-input" placeholder="新しいタスクを追加" autocomplete="off">
-        <button type="submit"><i class="fas fa-plus-square"></i></button>
-      </form>
-    </header>
-
-    <div class="filter-container">
-        <div class="filter-buttons">
-            <button class="filter-btn active" data-filter="all">すべて</button>
-            <button class="filter-btn" data-filter="pending">未完了</button>
-            <button class="filter-btn" data-filter="completed">完了済み</button>
-        </div>
+  <div id="auth-container">
+    <h1>Login / Sign Up</h1>
+    <div id="login-form">
+      <input type="email" id="login-email" placeholder="Email" />
+      <input type="password" id="login-password" placeholder="Password" />
+      <button id="login-btn">Login</button>
     </div>
-
-    <ul id="todo-list"></ul>
-
+    <hr>
+    <div id="signup-form">
+      <input type="email" id="signup-email" placeholder="Email" />
+      <input type="password" id="signup-password" placeholder="Password" />
+      <button id="signup-btn">Sign Up</button>
+    </div>
   </div>
 
+  <div id="todo-container" style="display: none;">
+    <h1>Todo List</h1>
+    <p>Welcome, <span id="user-email"></span>!</p>
+    <button id="logout-btn">Logout</button>
+    <hr>
+    <input type="text" id="task-input" placeholder="Add a new task" />
+    <button id="add-task-btn">Add Task</button>
+    <ul id="task-list"></ul>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBjxsOQE211XJXx4sBMDNlUXq4sCnoXHWA",
+      authDomain: "todo-list-app-dc338.firebaseapp.com",
+      projectId: "todo-list-app-dc338",
+      storageBucket: "todo-list-app-dc338.firebasestorage.app",
+      messagingSenderId: "825677067337",
+      appId: "1:825677067337:web:f29f3b73c0118dc3107b98"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
