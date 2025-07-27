@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       snapshot.forEach(doc => {
         console.log("Found task:", doc.id, doc.data().text);
-        addTaskToDOM(doc.id, doc.data().text);
+        addTaskToDOM(doc.id, doc.data().text, doc.data().completed);
       });
     } catch (error) {
       console.error("タスクの読み込みエラー:", error);
@@ -50,10 +50,36 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // --- 関数: タスクをDOMに追加する ---
-  const addTaskToDOM = (taskId, taskText) => {
+  const addTaskToDOM = (taskId, taskText, completed = false) => {
     const li = document.createElement('li');
-    li.textContent = taskText;
     li.dataset.taskId = taskId; // FirestoreのドキュメントIDを保存
+
+    const taskContent = document.createElement('div');
+    taskContent.className = 'task-content';
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = completed;
+    checkbox.addEventListener('change', async () => {
+      if (currentUser) {
+        try {
+          await db.collection('users').doc(currentUser.uid).collection('tasks').doc(taskId).update({
+            completed: checkbox.checked
+          });
+          li.classList.toggle('completed', checkbox.checked);
+          console.log("タスクの完了状態を更新しました:", taskId, checkbox.checked);
+        } catch (error) {
+          console.error("タスクの完了状態更新エラー:", error);
+        }
+      }
+    });
+
+    const span = document.createElement('span');
+    span.textContent = taskText;
+
+    taskContent.appendChild(checkbox);
+    taskContent.appendChild(span);
+    li.appendChild(taskContent);
 
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
@@ -71,6 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     li.appendChild(deleteBtn);
     taskList.appendChild(li);
+
+    // 完了状態に応じてクラスを適用
+    if (completed) {
+      li.classList.add('completed');
+    }
   };
 
 
@@ -164,12 +195,13 @@ document.addEventListener('DOMContentLoaded', () => {
       // Firestoreにタスクを追加
       const docRef = await db.collection('users').doc(currentUser.uid).collection('tasks').add({
         text: taskText,
+        completed: false, // 新しく追加: 完了状態をfalseで初期化
         timestamp: firebase.firestore.FieldValue.serverTimestamp() // サーバーのタイムスタンプ
       });
       console.log("Task successfully added to Firestore. Document ID:", docRef.id);
 
       // DOMにも追加
-      addTaskToDOM(docRef.id, taskText);
+      addTaskToDOM(docRef.id, taskText, false); // completedを渡す
       taskInput.value = '';
 
     } catch (error) {

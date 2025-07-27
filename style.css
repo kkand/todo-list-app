@@ -61,3 +61,20 @@ li {
   padding: 0.5rem 0;
   border-bottom: 1px solid #eee;
 }
+
+li.completed span {
+  text-decoration: line-through;
+  color: #888;
+}
+
+li .task-content {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+li .task-content input[type="checkbox"] {
+  width: auto;
+  margin-right: 0.5rem;
+  margin-bottom: 0;
+}
