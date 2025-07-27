@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const addTaskBtn = document.getElementById('add-task-btn');
   const taskInput = document.getElementById('task-input');
   const taskList = document.getElementById('task-list');
-  const filterSelect = document.getElementById('filter-select'); // 新しく追加
-  const sortSelect = document.getElementById('sort-select');     // 新しく追加
+  const filterTabs = document.querySelectorAll('.filter-tab'); // 新しく追加
+  const sortSelect = document.getElementById('sort-select');
 
   let currentUser = null; // 現在ログインしているユーザー
   let currentFilter = 'all'; // 現在のフィルター状態
@@ -268,12 +268,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 5. フィルター選択時のイベント
-  filterSelect.addEventListener('change', () => {
-    currentFilter = filterSelect.value;
-    if (currentUser) {
-      loadTasks(currentUser.uid);
-    }
+  // 5. フィルタータブ選択時のイベント
+  filterTabs.forEach(tab => {
+    tab.addEventListener('click', (e) => {
+      // アクティブクラスの切り替え
+      filterTabs.forEach(t => t.classList.remove('active'));
+      e.target.classList.add('active');
+
+      currentFilter = e.target.dataset.filter;
+      if (currentUser) {
+        loadTasks(currentUser.uid);
+      }
+    });
   });
 
   // 6. ソート選択時のイベント

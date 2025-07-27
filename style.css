@@ -94,6 +94,41 @@ p#user-email {
   display: flex;
   gap: 1rem;
   margin-top: 1rem;
+  align-items: center;
+}
+
+.filter-tabs {
+  display: flex;
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.filter-tab {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  background-color: #f8f9fa;
+  color: #555;
+  border: none;
+  border-right: 1px solid #ddd;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 0; /* タブ形式なので角丸をリセット */
+  margin-bottom: 0;
+}
+
+.filter-tab:last-child {
+  border-right: none;
+}
+
+.filter-tab.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.filter-tab:hover:not(.active) {
+  background-color: #e9ecef;
 }
 
 .filter-sort-controls select {
