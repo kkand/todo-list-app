@@ -4,7 +4,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, #e0b0ff 0%, #a060f0 100%); /* 紫系のグラデーション */
   margin: 0;
   color: #333;
 }
@@ -21,7 +21,7 @@ body {
 
 h1 {
   text-align: center;
-  color: #4a4a4a;
+  color: #6a0dad; /* 紫系の見出し色 */
   margin-bottom: 2rem;
   font-size: 2rem;
 }
@@ -38,14 +38,14 @@ input[type="email"], input[type="password"], input[type="text"] {
 }
 
 input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focus {
-  border-color: #007bff;
+  border-color: #8a2be2; /* 紫系のフォーカス色 */
   outline: none;
 }
 
 button {
   width: 100%;
   padding: 0.8rem 1rem;
-  background-color: #007bff;
+  background-color: #8a2be2; /* 紫系のボタン色 */
   color: white;
   border: none;
   border-radius: 8px;
@@ -56,7 +56,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #6a0dad; /* 紫系のホバー色 */
   transform: translateY(-2px);
 }
 
@@ -97,43 +97,6 @@ p#user-email {
   align-items: center;
 }
 
-.filter-tabs {
-  display: flex;
-  flex: 1;
-  /* border: 1px solid #ddd; */ /* 削除 */
-  border-radius: 25px; /* より丸く */
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* 影を追加 */
-}
-
-.filter-tab {
-  flex: 1;
-  padding: 0.6rem 0.8rem;
-  background-color: #f0f2f5; /* 背景色を調整 */
-  color: #555;
-  border: none;
-  /* border-right: 1px solid #ddd; */ /* 削除 */
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  border-radius: 25px; /* より丸く */
-  margin-bottom: 0;
-  text-align: center;
-}
-
-.filter-tab:not(:last-child) {
-  margin-right: 5px; /* タブ間のスペース */
-}
-
-.filter-tab.active {
-  background-color: #007bff;
-  color: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* アクティブなタブに影 */
-}
-
-.filter-tab:hover:not(.active) {
-  background-color: #e2e6ea; /* ホバー時の色を調整 */
-}
-
 .filter-sort-controls select {
   flex: 1;
   padding: 0.6rem 0.8rem;
@@ -143,6 +106,49 @@ p#user-email {
   font-size: 0.95rem;
   cursor: pointer;
 }
+
+/* 新しいフィルタータブのスタイル */
+.filter-tabs-container {
+  display: flex;
+  justify-content: space-around; /* タブを均等に配置 */
+  margin-top: 1.5rem; /* タスク追加ボタンの下に配置 */
+  border-bottom: 2px solid #eee; /* 下線 */
+  padding-bottom: 0.5rem;
+}
+
+.filter-tab {
+  background: none; /* 背景なし */
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #555;
+  position: relative;
+  transition: color 0.3s ease;
+  width: auto; /* 幅を自動調整 */
+  margin-bottom: 0; /* ボタンのデフォルトマージンをリセット */
+}
+
+.filter-tab:hover {
+  color: #8a2be2; /* 紫系のホバー色 */
+  transform: none; /* ホバー時のアニメーションを無効化 */
+}
+
+.filter-tab.active {
+  color: #8a2be2; /* アクティブなタブのテキスト色 */
+}
+
+.filter-tab.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px; /* 下線と重なるように調整 */
+  width: 100%;
+  height: 2px;
+  background-color: #8a2be2; /* アクティブなタブの下線色 */
+  transition: all 0.3s ease;
+}
+
 
 ul {
   list-style-type: none;
