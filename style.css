@@ -86,6 +86,26 @@ p#user-email {
   margin-bottom: 1.5rem;
 }
 
+.task-controls {
+  margin-bottom: 1.5rem;
+}
+
+.filter-sort-controls {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.filter-sort-controls select {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: white;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
 ul {
   list-style-type: none;
   padding: 0;

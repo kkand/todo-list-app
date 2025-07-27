@@ -23,21 +23,40 @@ document.addEventListener('DOMContentLoaded', () => {
   const addTaskBtn = document.getElementById('add-task-btn');
   const taskInput = document.getElementById('task-input');
   const taskList = document.getElementById('task-list');
+  const filterSelect = document.getElementById('filter-select'); // 新しく追加
+  const sortSelect = document.getElementById('sort-select');     // 新しく追加
 
   let currentUser = null; // 現在ログインしているユーザー
+  let currentFilter = 'all'; // 現在のフィルター状態
+  let currentSort = 'newest'; // 現在のソート状態
 
   // --- 関数: タスクをFirestoreから読み込み、表示する ---
   const loadTasks = async (userId) => {
     taskList.innerHTML = ''; // 現在のリストをクリア
     if (!userId) return; // ユーザーIDがない場合は何もしない
 
-    console.log("Loading tasks for user:", userId);
+    console.log("Loading tasks for user:", userId, "Filter:", currentFilter, "Sort:", currentSort);
     try {
-      const tasksRef = db.collection('users').doc(userId).collection('tasks').orderBy('timestamp', 'asc');
+      let tasksRef = db.collection('users').doc(userId).collection('tasks');
+
+      // フィルタリング
+      if (currentFilter === 'completed') {
+        tasksRef = tasksRef.where('completed', '==', true);
+      } else if (currentFilter === 'active') {
+        tasksRef = tasksRef.where('completed', '==', false);
+      }
+
+      // ソート
+      if (currentSort === 'newest') {
+        tasksRef = tasksRef.orderBy('timestamp', 'desc');
+      } else if (currentSort === 'oldest') {
+        tasksRef = tasksRef.orderBy('timestamp', 'asc');
+      }
+
       const snapshot = await tasksRef.get();
 
       if (snapshot.empty) {
-        console.log("No tasks found for this user.");
+        console.log("No tasks found for this user with current filter/sort.");
       }
 
       snapshot.forEach(doc => {
@@ -68,6 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
           });
           li.classList.toggle('completed', checkbox.checked);
           console.log("タスクの完了状態を更新しました:", taskId, checkbox.checked);
+          // フィルターが適用されている場合、再読み込みして表示を更新
+          if (currentFilter !== 'all') {
+            loadTasks(currentUser.uid);
+          }
         } catch (error) {
           console.error("タスクの完了状態更新エラー:", error);
         }
@@ -76,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const span = document.createElement('span');
     span.textContent = taskText;
-    span.className = 'task-text'; // 新しく追加: スタイル用にクラスを追加
+    span.className = 'task-text'; // スタイル用にクラスを追加
 
     taskContent.appendChild(checkbox);
     taskContent.appendChild(span);
@@ -150,6 +173,10 @@ document.addEventListener('DOMContentLoaded', () => {
           await db.collection('users').doc(currentUser.uid).collection('tasks').doc(taskId).delete();
           li.remove();
           console.log("タスクを削除しました:", taskId);
+          // フィルターが適用されている場合、再読み込みして表示を更新
+          if (currentFilter !== 'all') {
+            loadTasks(currentUser.uid);
+          }
         } catch (error) {
           console.error("タスクの削除エラー:", error);
         }
@@ -238,6 +265,22 @@ document.addEventListener('DOMContentLoaded', () => {
       todoContainer.style.display = 'none';
       userEmailSpan.textContent = '';
       taskList.innerHTML = ''; // タスクリストもクリア
+    }
+  });
+
+  // 5. フィルター選択時のイベント
+  filterSelect.addEventListener('change', () => {
+    currentFilter = filterSelect.value;
+    if (currentUser) {
+      loadTasks(currentUser.uid);
+    }
+  });
+
+  // 6. ソート選択時のイベント
+  sortSelect.addEventListener('change', () => {
+    currentSort = sortSelect.value;
+    if (currentUser) {
+      loadTasks(currentUser.uid);
     }
   });
 

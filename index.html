@@ -26,8 +26,24 @@
     <p>Welcome, <span id="user-email"></span>!</p>
     <button id="logout-btn">Logout</button>
     <hr>
-    <input type="text" id="task-input" placeholder="Add a new task" />
-    <button id="add-task-btn">Add Task</button>
+
+    <div class="task-controls">
+      <input type="text" id="task-input" placeholder="Add a new task" />
+      <button id="add-task-btn">Add Task</button>
+
+      <div class="filter-sort-controls">
+        <select id="filter-select">
+          <option value="all">All Tasks</option>
+          <option value="completed">Completed</option>
+          <option value="active">Active</option>
+        </select>
+        <select id="sort-select">
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+        </select>
+      </div>
+    </div>
+
     <ul id="task-list"></ul>
   </div>
 
