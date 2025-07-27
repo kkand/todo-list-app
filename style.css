@@ -11,7 +11,7 @@ body {
 
 #auth-container, #todo-container {
   background: white;
-  padding: 2rem; /* 2.5rem から 2rem に変更 */
+  padding: 1.5rem 2.5rem; /* 上下のパディングをさらに減らす */
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -22,7 +22,7 @@ body {
 h1 {
   text-align: center;
   color: #6a0dad; /* 紫系の見出し色 */
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem; /* マージンを減らす */
   font-size: 2rem;
 }
 
@@ -83,7 +83,7 @@ p#user-email {
   text-align: center;
   font-size: 1.1rem;
   color: #555;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem; /* マージンを減らす */
 }
 
 .task-controls {
