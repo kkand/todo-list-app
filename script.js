@@ -31,11 +31,17 @@ document.addEventListener('DOMContentLoaded', () => {
     taskList.innerHTML = ''; // 現在のリストをクリア
     if (!userId) return; // ユーザーIDがない場合は何もしない
 
+    console.log("Loading tasks for user:", userId);
     try {
       const tasksRef = db.collection('users').doc(userId).collection('tasks').orderBy('timestamp', 'asc');
       const snapshot = await tasksRef.get();
 
+      if (snapshot.empty) {
+        console.log("No tasks found for this user.");
+      }
+
       snapshot.forEach(doc => {
+        console.log("Found task:", doc.id, doc.data().text);
         addTaskToDOM(doc.id, doc.data().text);
       });
     } catch (error) {
@@ -125,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (user) {
       // --- ログインしている場合 ---
       currentUser = user; // 現在のユーザーをセット
-      console.log('ログイン状態:', currentUser.email);
+      console.log('ログイン状態:', currentUser.email, 'UID:', currentUser.uid);
       authContainer.style.display = 'none';
       todoContainer.style.display = 'block';
       userEmailSpan.textContent = currentUser.email;
@@ -146,24 +152,28 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- タスク追加ボタン (Firestoreに保存) ---
   addTaskBtn.addEventListener('click', async () => {
     const taskText = taskInput.value.trim();
+    console.log("Add Task button clicked. Task text:", taskText, "Current user:", currentUser);
+
     if (taskText === "" || !currentUser) {
+      console.log("Task text is empty or no user logged in. Aborting.");
       return;
     }
 
     try {
+      console.log("Attempting to add task to Firestore for user:", currentUser.uid, "with text:", taskText);
       // Firestoreにタスクを追加
       const docRef = await db.collection('users').doc(currentUser.uid).collection('tasks').add({
         text: taskText,
         timestamp: firebase.firestore.FieldValue.serverTimestamp() // サーバーのタイムスタンプ
       });
-      console.log("タスクを追加しました。ID:", docRef.id);
+      console.log("Task successfully added to Firestore. Document ID:", docRef.id);
 
       // DOMにも追加
       addTaskToDOM(docRef.id, taskText);
       taskInput.value = '';
 
     } catch (error) {
-      console.error("タスクの追加エラー:", error);
+      console.error("タスクの追加エラー (Firestore write failed):", error);
       alert("タスクの追加に失敗しました。" + error.message);
     }
   });
