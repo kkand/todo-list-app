@@ -81,6 +81,65 @@ document.addEventListener('DOMContentLoaded', () => {
     taskContent.appendChild(span);
     li.appendChild(taskContent);
 
+    // 編集ボタン
+    const editBtn = document.createElement('button');
+    editBtn.textContent = 'Edit';
+    editBtn.className = 'edit-btn'; // スタイル用にクラスを追加
+    editBtn.onclick = () => {
+      if (currentUser) {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = span.textContent;
+        input.className = 'edit-input'; // スタイル用にクラスを追加
+
+        // spanをinputに置き換え
+        taskContent.replaceChild(input, span);
+        input.focus();
+
+        // 保存処理
+        const saveTask = async () => {
+          const newText = input.value.trim();
+          if (newText === "") {
+            alert("タスクは空にできません。");
+            input.focus();
+            return;
+          }
+          if (newText !== taskText) { // テキストが変更された場合のみ更新
+            try {
+              await db.collection('users').doc(currentUser.uid).collection('tasks').doc(taskId).update({
+                text: newText
+              });
+              span.textContent = newText;
+              console.log("タスクを更新しました:", taskId, newText);
+            } catch (error) {
+              console.error("タスクの更新エラー:", error);
+              alert("タスクの更新に失敗しました。" + error.message);
+            }
+          }
+          // inputをspanに戻す
+          taskContent.replaceChild(span, input);
+          li.removeChild(saveBtn); // 保存ボタンを削除
+          li.insertBefore(editBtn, deleteBtn); // 編集ボタンを元に戻す
+        };
+
+        // 保存ボタンを作成
+        const saveBtn = document.createElement('button');
+        saveBtn.textContent = 'Save';
+        saveBtn.className = 'save-btn'; // スタイル用にクラスを追加
+        saveBtn.onclick = saveTask;
+
+        // Enterキーでの保存
+        input.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            saveTask();
+          }
+        });
+
+        li.insertBefore(saveBtn, deleteBtn); // 保存ボタンを削除ボタンの前に挿入
+        li.removeChild(editBtn); // 編集ボタンを削除
+      }
+    };
+
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.onclick = async () => {
@@ -95,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
+    li.appendChild(editBtn); // 編集ボタンを追加
     li.appendChild(deleteBtn);
     taskList.appendChild(li);
 
